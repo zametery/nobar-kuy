@@ -1,3 +1,5 @@
+[![build](https://github.com/zametery/nobar-kuy/actions/workflows/build.yaml/badge.svg)](https://github.com/zametery/nobar-kuy/actions/workflows/build.yaml)
+
 # dicoding_expert
 
 A new Flutter project.
