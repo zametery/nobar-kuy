@@ -7,15 +7,15 @@ import 'package:flutter/services.dart';
 
 class HttpConfig {
   static Future<Dio> client() async {
-    List<int> certificate = [];
-    certificate = (await rootBundle.load('certificates/certificates.pem'))
-        .buffer
-        .asUint8List();
-
     final dio = Dio(BaseOptions(
       baseUrl: APICore.baseUrl,
       headers: {'Content-Type': 'application/json'},
     ));
+
+    List<int> certificate = [];
+    certificate = (await rootBundle.load('certificates/certificates.pem'))
+        .buffer
+        .asUint8List();
 
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) {
@@ -26,8 +26,8 @@ class HttpConfig {
 
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         (client) {
-      SecurityContext context = SecurityContext();
-      context.setTrustedCertificates(certificate.join());
+      SecurityContext context = SecurityContext(withTrustedRoots: false);
+      context.setTrustedCertificatesBytes(certificate);
       HttpClient httpClient = HttpClient(context: context);
       return httpClient;
     };
